@@ -63,12 +63,12 @@ int main() {
 	};
 
 	// Vertex buffer object - generate buffer id, bind it to array buffer and then copy data to the bound buffer
-	unsigned int VBO, VBO2;
+	GLuint VBO, VBO2;
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &VBO2);
 
 	// Vertex Array Object
-	unsigned int VAO, VAO2;
+	GLuint VAO, VAO2;
 	glGenVertexArrays(1, &VAO);
 	glGenVertexArrays(1, &VAO2);
 
@@ -98,10 +98,10 @@ int main() {
 		"layout (location = 0) in vec3 aPos;\n"
 		"void main()\n"
 		"{\n"
-		"	gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+		"	gl_Position = vec4(aPos.xyz, 1.0);\n"
 		"}\0";
 
-	unsigned int vertexShader;
+	GLuint vertexShader;
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
@@ -124,7 +124,7 @@ int main() {
 		"	FragColor = vec4(1.0f, 0.2f, 0.2f, 1.0f);\n"
 		"}\0";
 
-	unsigned int fragmentShaderRed;
+	GLuint fragmentShaderRed;
 	fragmentShaderRed = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragmentShaderRed, 1, &fragmentShaderSourceRed, NULL);
 	glCompileShader(fragmentShaderRed);
@@ -144,7 +144,7 @@ int main() {
 		"	FragColor = vec4(1.0f, 1.0f, 0.2f, 1.0f);\n"
 		"}\0";
 
-	unsigned int fragmentShaderYellow;
+	GLuint fragmentShaderYellow;
 	fragmentShaderYellow = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragmentShaderYellow, 1, &fragmentShaderSourceYellow, NULL);
 	glCompileShader(fragmentShaderYellow);
@@ -157,7 +157,7 @@ int main() {
 	}
 
 	// Shader program - create program, attach and link vertex and fragment shaders to it, check compilation, then use program
-	unsigned int shaderProgramRed;
+	GLuint shaderProgramRed;
 	shaderProgramRed = glCreateProgram();
 
 	glAttachShader(shaderProgramRed, vertexShader);
@@ -170,7 +170,7 @@ int main() {
 		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
 	}
 
-	unsigned int shaderProgramYellow;
+	GLuint shaderProgramYellow;
 	shaderProgramYellow = glCreateProgram();
 
 	glAttachShader(shaderProgramYellow, vertexShader);
@@ -187,7 +187,11 @@ int main() {
 	glDeleteShader(fragmentShaderRed);
 	glDeleteShader(fragmentShaderYellow);
 
-	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	 //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	int nrAttributes;
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
+	std::cout << "Maximum nr of vertex attributes supported: " << nrAttributes << std::endl;
 
 	while (!glfwWindowShouldClose(window)) {
 		processInput(window);
