@@ -67,17 +67,19 @@ int main() {
 		0.25f, -0.5f, 0.0f,		0.0f, 0.0f, 1.0f
 	};
 
-	unsigned int indices[] = {
-		3, 4, 5
+	float triangleFour[] = {
+		-1.0f, -1.0f, 0.0f,
+		-0.5f, 0.0f, 0.0f,
+		0.0f, -1.0f, 0.0f
 	};
 
 	// Vertex buffer object - generate buffer id, bind it to array buffer and then copy data to the bound buffer
-	GLuint VBOs[3];
-	glGenBuffers(3, VBOs);
+	GLuint VBOs[4];
+	glGenBuffers(4, VBOs);
 
 	// Vertex Array Object
-	GLuint VAOs[3];
-	glGenVertexArrays(3, VAOs);
+	GLuint VAOs[4];
+	glGenVertexArrays(4, VAOs);
 
 	// Triangle One
 	glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
@@ -105,9 +107,18 @@ int main() {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3*sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	Shader shaderOne("Shaders/shader.vert", "Shaders/shader.frag");
+	// Triangle Four
+	glBindBuffer(GL_ARRAY_BUFFER, VBOs[3]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(triangleFour), triangleFour, GL_STATIC_DRAW);
+
+	glBindVertexArray(VAOs[3]);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	Shader shaderOne("Shaders/flipTriangle.vert", "Shaders/shader.frag");
 	Shader shaderTwo("Shaders/shader.vert", "Shaders/greenBlink.frag");
 	Shader shaderThree("Shaders/colorShader.vert", "Shaders/rainbow.frag");
+	Shader shaderFour("Shaders/position.vert", "Shaders/position.frag");
 
 	int nrAttributes;
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
@@ -124,18 +135,23 @@ int main() {
 		glBindVertexArray(VAOs[0]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
+		shaderTwo.use();
 		float timeValue = glfwGetTime();
 		float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-		int vertexColorLocation = glGetUniformLocation(shaderTwo.ID, "ourColor");
+		int vertexColorLocation = glGetUniformLocation(shaderTwo.getID(), "ourColor");
 
-		shaderTwo.use();
-		glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+		glUniform4f(vertexColorLocation, greenValue, greenValue, greenValue, 1.0f);
+		shaderTwo.setFloat("xOffset", 0.5f);
 
 		glBindVertexArray(VAOs[1]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		shaderThree.use();
 		glBindVertexArray(VAOs[2]);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		shaderFour.use();
+		glBindVertexArray(VAOs[3]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		glfwPollEvents();
@@ -145,9 +161,9 @@ int main() {
 	glDeleteVertexArrays(3, VAOs);
 	glDeleteBuffers(3, VBOs);
 
-	glDeleteProgram(shaderOne.ID);
-	glDeleteProgram(shaderTwo.ID);
-	glDeleteProgram(shaderThree.ID);
+	glDeleteProgram(shaderOne.getID());
+	glDeleteProgram(shaderTwo.getID());
+	glDeleteProgram(shaderThree.getID());
 
 	glfwTerminate();
 	return 0;

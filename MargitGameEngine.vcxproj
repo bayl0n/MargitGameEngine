@@ -150,7 +150,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\colorShader.vert" />
+    <None Include="Shaders\flipTriangle.vert" />
     <None Include="Shaders\greenBlink.frag" />
+    <None Include="Shaders\position.frag" />
+    <None Include="Shaders\position.vert" />
     <None Include="Shaders\rainbow.frag" />
     <None Include="Shaders\shader.frag" />
     <None Include="Shaders\shader.vert" />

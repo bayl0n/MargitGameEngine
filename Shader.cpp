@@ -33,7 +33,6 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath) {
 	const char* fShaderCode = fragmentCode.c_str();
 
 	// Compile the shaders
-
 	unsigned int vertex, fragment;
 	int success;
 	char infoLog[512];
@@ -93,4 +92,8 @@ void Shader::setInt(const std::string& name, int value) const {
 
 void Shader::setFloat(const std::string& name, float value) const {
 	glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+}
+
+GLuint Shader::getID() {
+	return ID;
 }

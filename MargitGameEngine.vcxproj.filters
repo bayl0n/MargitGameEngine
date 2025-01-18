@@ -49,5 +49,14 @@
     <None Include="Shaders\rainbow.frag">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Shaders\flipTriangle.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\position.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\position.frag">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
