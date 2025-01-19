@@ -12,7 +12,7 @@ class Shader
 public:
 	Shader(const char* vertexPath, const char* fragmentPath);
 
-	GLuint getID();
+	GLuint getID() const;
 
 	void use();
 	void setBool(const std::string& name, bool value) const;

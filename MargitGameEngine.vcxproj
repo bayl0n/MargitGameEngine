@@ -144,9 +144,11 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\colorShader.vert" />
@@ -157,6 +159,13 @@
     <None Include="Shaders\rainbow.frag" />
     <None Include="Shaders\shader.frag" />
     <None Include="Shaders\shader.vert" />
+    <None Include="Shaders\texture.frag" />
+    <None Include="Shaders\texture.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\awesomeface.png" />
+    <Image Include="Textures\container.jpg" />
+    <Image Include="Textures\wall.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
