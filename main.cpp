@@ -2,6 +2,10 @@
 #include <GLFW/glfw3.h>
 #include "stb_image.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <iostream>
 
 #include "Shader.h"
@@ -166,7 +170,7 @@ int main() {
 
 	// load and generate the texture
 	int width, height, nrChannels;
-	unsigned char* data = stbi_load("Textures/container.jpg", &width, &height, &nrChannels, 0);
+	unsigned char* data = stbi_load("Textures/water.bmp", &width, &height, &nrChannels, 0);
 
 	if (data) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -188,9 +192,9 @@ int main() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	stbi_set_flip_vertically_on_load(true);
-	data = stbi_load("Textures/wall.jpg", &width, &height, &nrChannels, 0);
+	data = stbi_load("Textures/awesomeface.png", &width, &height, &nrChannels, 0);
 	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else {
