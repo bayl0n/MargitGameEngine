@@ -73,6 +73,9 @@
     <None Include="Shaders\texture.frag">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Shaders\transform.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\wall.jpg">

@@ -163,6 +163,7 @@
     <None Include="Shaders\shader.vert" />
     <None Include="Shaders\texture.frag" />
     <None Include="Shaders\texture.vert" />
+    <None Include="Shaders\transform.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\awesomeface.png" />
