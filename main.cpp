@@ -27,6 +27,7 @@ float textureVisibility = 1.0f;
 float fov = 45.0f;
 
 bool firstMouse = true;
+bool isCursorMode = true;
 
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -346,6 +347,17 @@ void processInput(GLFWwindow* window) {
 			textureVisibility = 0.0f;
 	}
 
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+		isCursorMode = false;
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+		isCursorMode = true;
+		firstMouse = true;
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	}
+
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		cameraPos += cameraSpeed * cameraFront;
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -358,12 +370,16 @@ void processInput(GLFWwindow* window) {
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
+	if (!isCursorMode)
+		return;
+
 	if (firstMouse) {
 		lastX = xpos;
 		lastY = ypos;
 
 		firstMouse = false;
 	}
+
 	float xoffset = xpos - lastX;
 	float yoffset = lastY - ypos; // reversed as y-coordinates range from bottom to top
 
