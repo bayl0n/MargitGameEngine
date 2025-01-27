@@ -13,7 +13,7 @@ enum Camera_Movement {
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
 const float SPEED = 5.0f;
-const float SENSITIVITY = 0.1f;
+const float SENSITIVITY = 0.05f;
 const float ZOOM = 45.0f;
 
 class Camera
@@ -123,7 +123,7 @@ private:
 		Front = glm::normalize(front);
 
 		// re-calculate the Right and Up vector
-		Right = glm::normalize(glm::cross(Front, WorldUp)); // normalise the vectors, because their legnths gets closer to 0 the more you looj up or down which results in slower movement
+		Right = glm::normalize(glm::cross(Front, WorldUp)); // normalise the vectors, because their legnths gets closer to 0 the more you look up or down which results in slower movement
 		Up = glm::normalize(glm::cross(Right, Front));
 	}
 };

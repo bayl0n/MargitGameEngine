@@ -18,15 +18,12 @@ void processInput(GLFWwindow* window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
-const unsigned int WIDTH = 640;
-const unsigned int HEIGHT = 360;
-
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
 bool firstMouse = true;
 
-float lastX = WIDTH / 2.0f, lastY = HEIGHT / 2.0f;
+float lastX, lastY;
 
 float textureVisibility = 1.0f;
 
@@ -48,7 +45,16 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Margit Game Engine", NULL, NULL);
+	GLFWmonitor* myMonitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode* mode = glfwGetVideoMode(myMonitor);
+	int width = mode->width;
+	int height = mode->height;
+
+	std::cout << width << " " << height << std::endl;
+
+	lastX = width / 2.0f, lastY = height / 2.0f;
+
+	GLFWwindow* window = glfwCreateWindow(width, height, "Margit Game Engine", glfwGetPrimaryMonitor(), nullptr);
 
 	if (!window)
 	{
@@ -65,7 +71,7 @@ int main() {
 		return -1;
 	}
 
-	glViewport(0, 0, WIDTH, HEIGHT);
+	glViewport(0, 0, width, height);
 	glEnable(GL_DEPTH_TEST);
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -73,7 +79,6 @@ int main() {
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
-
 
 	float vertices[] = {
 		0.5f, 0.5f, 0.0f,	// Top right
@@ -216,11 +221,11 @@ int main() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	// load and generate the texture
-	int width, height, nrChannels;
-	unsigned char* data = stbi_load("Textures/water.bmp", &width, &height, &nrChannels, 0);
+	int t_width, t_height, nrChannels;
+	unsigned char* data = stbi_load("Textures/water.bmp", &t_width, &t_height, &nrChannels, 0);
 
 	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t_width, t_height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else {
@@ -239,9 +244,9 @@ int main() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	stbi_set_flip_vertically_on_load(true);
-	data = stbi_load("Textures/awesomeface.png", &width, &height, &nrChannels, 0);
+	data = stbi_load("Textures/awesomeface.png", &t_width, &t_height, &nrChannels, 0);
 	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, t_width, t_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else {
@@ -277,7 +282,7 @@ int main() {
 
 		// camera logic
 		glm::mat4 projection;
-		projection = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+		projection = glm::perspective(glm::radians(camera.Zoom), (float)width / (float)height, 0.1f, 100.0f);
 		shaderFive.setMat4("projection", projection);
 
 		//float scale = 1.0f;
