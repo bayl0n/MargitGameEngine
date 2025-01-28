@@ -3,23 +3,25 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-enum Camera_Movement {
-	FORWARD,
-	BACKWARD,
-	LEFT,
-	RIGHT,
-	TILT_LEFT,
-	TILT_RIGHT
-};
-
-const float YAW = -90.0f;
-const float PITCH = 0.0f;
-const float ROLL = 0.0f;
-const float SPEED = 5.0f;
-const float SENSITIVITY = 0.05f;
-const float ZOOM = 45.0f;
-
 namespace Margit {
+	enum Camera_Movement {
+		FORWARD,
+		BACKWARD,
+		LEFT,
+		RIGHT,
+		UP,
+		DOWN,
+		TILT_LEFT,
+		TILT_RIGHT
+	};
+
+	const float YAW = -90.0f;
+	const float PITCH = 0.0f;
+	const float ROLL = 0.0f;
+	const float SPEED = 10.0f;
+	const float SENSITIVITY = 0.05f;
+	const float ZOOM = 45.0f;
+
 	class Camera
 	{
 	public:
@@ -83,20 +85,47 @@ namespace Margit {
 			return glm::lookAt(Position, Position + Front, Up);
 		}
 
+		glm::mat4 GetPerspectiveMatrix(float width, float height) {
+			return glm::perspective(glm::radians(this->Zoom), width / height, 0.1f, 100.0f);
+		}
+
+		glm::mat4 GetOrthoMatrix(float width, float height, float scale = 1.0f) {
+			float aspect = width / height;
+
+			return glm::ortho(-aspect * scale, aspect * scale, -scale, scale, 0.1f, 100.0f);
+		}
+
 		void ProcessKeyboard(Camera_Movement direction, float deltaTime) {
 			float velocity = MovementSpeed * deltaTime;
-			if (direction == FORWARD)
+
+			switch (direction) {
+			case FORWARD:
 				Position += glm::normalize(glm::vec3(Front.x, 0, Front.z)) * velocity;
-			if (direction == BACKWARD)
+				break;
+			case BACKWARD:
 				Position -= glm::normalize(glm::vec3(Front.x, 0, Front.z)) * velocity;
-			if (direction == LEFT)
+				break;
+			case LEFT:
 				Position -= Right * velocity;
-			if (direction == RIGHT)
+				break;
+			case RIGHT:
 				Position += Right * velocity;
-			if (direction == TILT_LEFT)
+				break;
+			case UP:
+				Position += WorldUp * velocity;
+				break;
+			case DOWN:
+				Position -= WorldUp * velocity;
+				break;
+			case TILT_LEFT:
 				Roll -= velocity * 10.0f;
-			if (direction == TILT_RIGHT)
+				break;
+			case TILT_RIGHT:
 				Roll += velocity * 10.0f;
+				break;
+			default:
+				break;
+			}
 
 			updateCameraVectors();
 		}

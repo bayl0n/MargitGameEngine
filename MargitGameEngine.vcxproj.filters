@@ -50,6 +50,9 @@
     <ClInclude Include="Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FastNoiseLite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\shader.frag">
@@ -95,6 +98,12 @@
     </Image>
     <Image Include="Textures\awesomeface.png">
       <Filter>Textures</Filter>
+    </Image>
+    <Image Include="Textures\dirt.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="thumbnail.png">
+      <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
 </Project>
