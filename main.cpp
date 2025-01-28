@@ -19,7 +19,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 // camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Margit::Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
 bool firstMouse = true;
 
@@ -27,7 +27,7 @@ float lastX, lastY;
 
 float textureVisibility = 1.0f;
 
-bool isCursorMode = true;
+bool isCursorEnabled = true;
 
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
@@ -49,8 +49,6 @@ int main() {
 	const GLFWvidmode* mode = glfwGetVideoMode(myMonitor);
 	int width = mode->width;
 	int height = mode->height;
-
-	std::cout << width << " " << height << std::endl;
 
 	lastX = width / 2.0f, lastY = height / 2.0f;
 
@@ -174,7 +172,8 @@ int main() {
 		glm::vec3(1.3f, -2.0f, -2.5f),
 		glm::vec3(1.5f,  2.0f, -2.5f),
 		glm::vec3(1.5f,  0.2f, -1.5f),
-		glm::vec3(-1.3f,  1.0f, -1.5f)
+		glm::vec3(-1.3f,  1.0f, -1.5f),
+		glm::vec3(0.0f, -4.0f, 3.0f)
 	};
 
 	// Vertex buffer object - generate buffer id, bind it to array buffer and then copy data to the bound buffer
@@ -200,9 +199,6 @@ int main() {
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBOs[4]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(cube), cube, GL_STATIC_DRAW);
-
-	/*glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBOs[0]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);*/
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -246,7 +242,7 @@ int main() {
 	stbi_set_flip_vertically_on_load(true);
 	data = stbi_load("Textures/awesomeface.png", &t_width, &t_height, &nrChannels, 0);
 	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, t_width, t_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t_width, t_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else {
@@ -254,7 +250,7 @@ int main() {
 	}
 	stbi_image_free(data);
 
-	Shader shaderFive("Shaders/transform.vert", "Shaders/texture.frag");
+	Margit::Shader shaderFive("Shaders/transform.vert", "Shaders/texture.frag");
 
 	shaderFive.use();
 	shaderFive.setInt("texture1", 0);
@@ -292,17 +288,23 @@ int main() {
 		glm::mat4 view = camera.GetViewMatrix();
 		shaderFive.setMat4("view", view);
 
-		for (unsigned int i = 0; i < 10; i++) {
+		for (unsigned int i = 0; i < 11; i++) {
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, cubePositions[i]);
 			float angle = 20.0f * (i + 1);
 
-			model = glm::rotate(model, glm::radians((float)sin(glfwGetTime() * 5) * angle), glm::vec3(1.0f, 0.3, 0.5f));
+			//model = glm::rotate(model, glm::radians((float)sin(glfwGetTime() * 5) * angle), glm::vec3(1.0f, 0.3, 0.5f));
+
+			if (i >= 10)
+				model = glm::scale(model, glm::vec3(30.0f, 1.0f, 30.0f));
 			
 			shaderFive.setMat4("model", model);
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
+
+		// Adjust the last triangle
+
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -336,16 +338,22 @@ void processInput(GLFWwindow* window) {
 			textureVisibility = 0.0f;
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-		isCursorMode = false;
+	if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+		isCursorEnabled = false;
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	}
 
-	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-		isCursorMode = true;
+	if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
+		isCursorEnabled = true;
 		firstMouse = true;
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	}
+
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+		camera.ProcessKeyboard(TILT_LEFT, deltaTime);
+
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+		camera.ProcessKeyboard(TILT_RIGHT, deltaTime);
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera.ProcessKeyboard(FORWARD, deltaTime);
@@ -359,7 +367,7 @@ void processInput(GLFWwindow* window) {
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-	if (!isCursorMode)
+	if (!isCursorEnabled)
 		return;
 
 	if (firstMouse) {
