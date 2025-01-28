@@ -26,7 +26,7 @@ bool firstMouse = true;
 
 float lastX, lastY;
 
-float textureVisibility = 1.0f;
+float textureVisibility = 0.0f;
 
 bool isCursorEnabled = true;
 
@@ -92,47 +92,47 @@ int main() {
 	};
 
 	float cube[] = {
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f, 0.0f, 0.3333f,		// Back
+		0.5f, -0.5f, -0.5f,  1.0f, 0.3333f,
+		0.5f,  0.5f, -0.5f,  1.0f, 0.6667f,
+		0.5f,  0.5f, -0.5f,  1.0f, 0.6667f,
+		-0.5f,  0.5f, -0.5f, 0.0f, 0.6667f,
+		-0.5f, -0.5f, -0.5f, 0.0f, 0.3333f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.3333f,	// Front
+		0.5f, -0.5f,  0.5f,  1.0f, 0.3333f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.6667f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.6667f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.6667f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.3333f,
+
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.6667f,		// Left
+		-0.5f,  0.5f, -0.5f,  1.0f, 0.6667f,
+		-0.5f, -0.5f, -0.5f,  1.0f, 0.3333f,
+		-0.5f, -0.5f, -0.5f,  1.0f, 0.3333f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.3333f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.6667f,
+
+		0.5f,  0.5f,  0.5f,  0.0f, 0.6667f,	// Right
+		0.5f,  0.5f, -0.5f,  1.0f, 0.6667f,
+		0.5f, -0.5f, -0.5f,   1.0f, 0.3333f,
+		0.5f, -0.5f, -0.5f,   1.0f, 0.3333f,
+		0.5f, -0.5f,  0.5f,  0.0f, 0.3333f,
+		0.5f,  0.5f,  0.5f,  0.0f, 0.6667f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,	// Bottom
 		0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.3333f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.3333f,
+		-0.5f, -0.5f,  0.5f, 0.0f, 0.3333f,
 		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+		-0.5f,  0.5f, -0.5f,	0.0f, 0.6667f,	// Top
+		0.5f,  0.5f, -0.5f,		1.0f, 0.6667f,
+		0.5f,  0.5f,  0.5f,		1.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,		1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,	0.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,	0.0f, 0.6667f
 	};
 
 	// Vertex buffer object - generate buffer id, bind it to array buffer and then copy data to the bound buffer
@@ -170,11 +170,12 @@ int main() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	// load and generate the texture
+	stbi_set_flip_vertically_on_load(true);
 	int t_width, t_height, nrChannels;
-	unsigned char* data = stbi_load("Textures/water.bmp", &t_width, &t_height, &nrChannels, 0);
+	unsigned char* data = stbi_load("Textures/grass_atlas.png", &t_width, &t_height, &nrChannels, 0);
 
 	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t_width, t_height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, t_width, t_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else {
@@ -192,10 +193,30 @@ int main() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	stbi_set_flip_vertically_on_load(true);
 	data = stbi_load("Textures/dirt_texture.jpg", &t_width, &t_height, &nrChannels, 0);
 	if (data) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t_width, t_height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else {
+		std::cout << "Failed to load texture" << std::endl;
+	}
+	stbi_image_free(data);
+
+	// Grass block atlas
+	GLuint grassAtlasTexture;
+	glGenTextures(1, &grassAtlasTexture);
+	glBindTexture(GL_TEXTURE_2D, grassAtlasTexture);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	data = stbi_load("Textures/grass_atlas.png", &t_width, &t_height, &nrChannels, 0);
+	if (data) {
+		const int atlasWidth = 16;
+		const int atlasHeight = 48;
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, atlasWidth, atlasHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else {
