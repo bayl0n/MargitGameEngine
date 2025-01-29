@@ -105,5 +105,8 @@
     <Image Include="thumbnail.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Textures\dirt_atlas.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

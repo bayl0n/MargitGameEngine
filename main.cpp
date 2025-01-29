@@ -70,12 +70,17 @@ int main() {
 		return -1;
 	}
 
+	// Noise generator
 	FastNoiseLite noise;
 	noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
-	noise.SetFrequency(0.05f);
+	noise.SetFrequency(0.04f);
 
 	glViewport(0, 0, screen_width, screen_height);
 	glEnable(GL_DEPTH_TEST);
+
+	// Face culling
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -92,47 +97,48 @@ int main() {
 	};
 
 	float cube[] = {
-		-0.5f, -0.5f, -0.5f, 0.0f, 0.3333f,		// Back
-		0.5f, -0.5f, -0.5f,  1.0f, 0.3333f,
-		0.5f,  0.5f, -0.5f,  1.0f, 0.6667f,
-		0.5f,  0.5f, -0.5f,  1.0f, 0.6667f,
-		-0.5f,  0.5f, -0.5f, 0.0f, 0.6667f,
-		-0.5f, -0.5f, -0.5f, 0.0f, 0.3333f,
-
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.3333f,	// Front
-		0.5f, -0.5f,  0.5f,  1.0f, 0.3333f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.6667f,
-		0.5f,  0.5f,  0.5f,  1.0f, 0.6667f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 0.6667f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.3333f,
-
-		-0.5f,  0.5f,  0.5f,  0.0f, 0.6667f,		// Left
-		-0.5f,  0.5f, -0.5f,  1.0f, 0.6667f,
-		-0.5f, -0.5f, -0.5f,  1.0f, 0.3333f,
-		-0.5f, -0.5f, -0.5f,  1.0f, 0.3333f,
-		-0.5f, -0.5f,  0.5f,  0.0f, 0.3333f,
-		-0.5f,  0.5f,  0.5f,  0.0f, 0.6667f,
-
-		0.5f,  0.5f,  0.5f,  0.0f, 0.6667f,	// Right
-		0.5f,  0.5f, -0.5f,  1.0f, 0.6667f,
-		0.5f, -0.5f, -0.5f,   1.0f, 0.3333f,
-		0.5f, -0.5f, -0.5f,   1.0f, 0.3333f,
-		0.5f, -0.5f,  0.5f,  0.0f, 0.3333f,
-		0.5f,  0.5f,  0.5f,  0.0f, 0.6667f,
-
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,	// Bottom
-		0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.3333f,
-		0.5f, -0.5f,  0.5f,  1.0f, 0.3333f,
-		-0.5f, -0.5f,  0.5f, 0.0f, 0.3333f,
-		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-		-0.5f,  0.5f, -0.5f,	0.0f, 0.6667f,	// Top
-		0.5f,  0.5f, -0.5f,		1.0f, 0.6667f,
-		0.5f,  0.5f,  0.5f,		1.0f, 1.0f,
-		0.5f,  0.5f,  0.5f,		1.0f, 1.0f,
-		-0.5f,  0.5f,  0.5f,	0.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f,	0.0f, 0.6667f
+		// Back face
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.3333f, // Bottom-left
+		 0.5f,  0.5f, -0.5f,  1.0f, 0.6667f, // top-right
+		 0.5f, -0.5f, -0.5f,  1.0f, 0.3333f, // bottom-right         
+		 0.5f,  0.5f, -0.5f,  1.0f, 0.6667f, // top-right
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.3333f, // bottom-left
+		-0.5f,  0.5f, -0.5f,  0.0f, 0.6667f, // top-left
+		// Front face
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.3333f, // bottom-left
+		 0.5f, -0.5f,  0.5f,  1.0f, 0.3333f, // bottom-right
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.6667f, // top-right
+		 0.5f,  0.5f,  0.5f,  1.0f, 0.6667f, // top-right
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.6667f, // top-left
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.3333f, // bottom-left
+		// Left face
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.6667f, // top-right
+		-0.5f,  0.5f, -0.5f,  0.0f, 0.6667f, // top-left
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.3333f, // bottom-left
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.3333f, // bottom-left
+		-0.5f, -0.5f,  0.5f,  1.0f, 0.3333f, // bottom-right
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.6667f, // top-right
+		// Right face
+		 0.5f,  0.5f,  0.5f,  0.0f, 0.6667f, // top-left
+		 0.5f, -0.5f, -0.5f,  1.0f, 0.3333f, // bottom-right
+		 0.5f,  0.5f, -0.5f,  1.0f, 0.6667f, // top-right         
+		 0.5f, -0.5f, -0.5f,  1.0f, 0.3333f, // bottom-right
+		 0.5f,  0.5f,  0.5f,  0.0f, 0.6667f, // top-left
+		 0.5f, -0.5f,  0.5f,  0.0f, 0.3333f, // bottom-left     
+		 // Bottom face
+		 -0.5f, -0.5f, -0.5f,  1.0f, 0.3333f, // top-right
+		  0.5f, -0.5f, -0.5f,  0.0f, 0.3333f, // top-left
+		  0.5f, -0.5f,  0.5f,  0.0f, 0.0f,	  // bottom-left
+		  0.5f, -0.5f,  0.5f,  0.0f, 0.0f,	  // bottom-left
+		 -0.5f, -0.5f,  0.5f,  1.0f, 0.0f,	  // bottom-right
+		 -0.5f, -0.5f, -0.5f,  1.0f, 0.3333f, // top-right
+		 // Top face
+		 -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,	  // top-left
+		  0.5f,  0.5f,  0.5f,  1.0f, 0.6667f, // bottom-right
+		  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,	  // top-right     
+		  0.5f,  0.5f,  0.5f,  1.0f, 0.6667f, // bottom-right
+		 -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,	  // top-left
+		 -0.5f,  0.5f,  0.5f,  0.0f, 0.6667f  // bottom-left        
 	};
 
 	// Vertex buffer object - generate buffer id, bind it to array buffer and then copy data to the bound buffer
@@ -160,9 +166,9 @@ int main() {
 	glEnableVertexAttribArray(1);
 
 	// LOAD TEXTURES
-	GLuint texture1;
-	glGenTextures(1, &texture1);
-	glBindTexture(GL_TEXTURE_2D, texture1);
+	GLuint grassAtlasTexture;
+	glGenTextures(1, &grassAtlasTexture);
+	glBindTexture(GL_TEXTURE_2D, grassAtlasTexture);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -184,16 +190,16 @@ int main() {
 	stbi_image_free(data);
 
 	// texture 2
-	GLuint texture2;
-	glGenTextures(1, &texture2);
-	glBindTexture(GL_TEXTURE_2D, texture2);
+	GLuint waterTexture;
+	glGenTextures(1, &waterTexture);
+	glBindTexture(GL_TEXTURE_2D, waterTexture);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	data = stbi_load("Textures/dirt_texture.jpg", &t_width, &t_height, &nrChannels, 0);
+	data = stbi_load("Textures/water.bmp", &t_width, &t_height, &nrChannels, 0);
 	if (data) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, t_width, t_height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
@@ -203,20 +209,17 @@ int main() {
 	}
 	stbi_image_free(data);
 
-	// Grass block atlas
-	GLuint grassAtlasTexture;
-	glGenTextures(1, &grassAtlasTexture);
-	glBindTexture(GL_TEXTURE_2D, grassAtlasTexture);
+	// dirt block atlas
+	GLuint dirtAtlasTexture;
+	glGenTextures(1, &dirtAtlasTexture);
+	glBindTexture(GL_TEXTURE_2D, dirtAtlasTexture);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-	data = stbi_load("Textures/grass_atlas.png", &t_width, &t_height, &nrChannels, 0);
+	data = stbi_load("Textures/dirt_atlas.png", &t_width, &t_height, &nrChannels, 0);
 	if (data) {
-		const int atlasWidth = 16;
-		const int atlasHeight = 48;
-
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, atlasWidth, atlasHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, t_width, t_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else {
@@ -224,11 +227,20 @@ int main() {
 	}
 	stbi_image_free(data);
 
-	Margit::Shader shaderFive("Shaders/transform.vert", "Shaders/texture.frag");
+	Margit::Shader grassShader("Shaders/transform.vert", "Shaders/texture.frag");
+	Margit::Shader dirtShader("Shaders/transform.vert", "Shaders/texture.frag");
 
-	shaderFive.use();
-	shaderFive.setInt("texture1", 0);
-	shaderFive.setInt("texture2", 1);
+	dirtShader.use();
+
+	// Bind textures
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, dirtAtlasTexture);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, waterTexture);
+
+	dirtShader.setInt("texture1", 0);
+	dirtShader.setInt("texture2", 1);
 
 	while (!glfwWindowShouldClose(window)) {
 		// delta time calculation
@@ -241,34 +253,37 @@ int main() {
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Rectangle
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture1);
-
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, texture2);
-
-		shaderFive.setFloat("textureVisibility", textureVisibility);
+		dirtShader.setFloat("textureVisibility", textureVisibility);
 
 		// camera logic
 		glm::mat4 projection;
 		projection = camera.GetPerspectiveMatrix(screen_width, screen_height);
-		shaderFive.setMat4("projection", projection);
+		dirtShader.setMat4("projection", projection);
 
 		glm::mat4 view = camera.GetViewMatrix();
-		shaderFive.setMat4("view", view);
+		dirtShader.setMat4("view", view);
 
 		for (int chunkWidth = 0; chunkWidth < 64; chunkWidth++) {
 			for (int chunkDepth = 0; chunkDepth < 64; chunkDepth++) {
 
 				float noiseValue = noise.GetNoise((float)chunkWidth, (float)chunkDepth);
-				float chunkPillarHeight = (noiseValue - -1.0f) / (1.0f - -1.0f) * (15 - 0) + 0;
+				float chunkPillarHeight = (noiseValue - -1.0f) / (1.0f - -1.0f) * (15 - 0) + 0; // TODO: Turn this into a remap function
 
 				for (int chunkHeight = 0; chunkHeight < chunkPillarHeight; chunkHeight++) {
 					glm::mat4 model = glm::mat4(1.0f);
 
-					model = glm::translate(model, glm::vec3((float)-chunkWidth, (float)chunkHeight - 16, (float)-chunkDepth));
-					shaderFive.setMat4("model", model);
+					model = glm::translate(model, glm::vec3((float)chunkWidth, (float)chunkHeight - 16, (float)-chunkDepth));
+					
+					if (chunkHeight < chunkPillarHeight - 1) {
+						glActiveTexture(GL_TEXTURE0);
+						glBindTexture(GL_TEXTURE_2D, dirtAtlasTexture);
+					}
+					else {
+						glActiveTexture(GL_TEXTURE0);
+						glBindTexture(GL_TEXTURE_2D, grassAtlasTexture);
+					}
+
+					dirtShader.setMat4("model", model);
 
 					glDrawArrays(GL_TRIANGLES, 0, 36);
 				}
@@ -294,14 +309,14 @@ void processInput(GLFWwindow* window) {
 		glfwSetWindowShouldClose(window, true);
 	
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-		textureVisibility += 0.01f;
+		textureVisibility += 1.0f * deltaTime;
 
 		if (textureVisibility >= 1.0f)
 			textureVisibility = 1.0f;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-		textureVisibility -= 0.01f;
+		textureVisibility -= 1.0f * deltaTime;
 
 		if (textureVisibility <= 0.0f)
 			textureVisibility = 0.0f;

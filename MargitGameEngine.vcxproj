@@ -173,6 +173,7 @@
     <Image Include="Textures\awesomeface.png" />
     <Image Include="Textures\container.jpg" />
     <Image Include="Textures\dirt.jpg" />
+    <Image Include="Textures\dirt_atlas.png" />
     <Image Include="Textures\wall.jpg" />
     <Image Include="thumbnail.png" />
   </ItemGroup>

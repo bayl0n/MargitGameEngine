@@ -86,13 +86,13 @@ namespace Margit {
 		}
 
 		glm::mat4 GetPerspectiveMatrix(float width, float height) {
-			return glm::perspective(glm::radians(this->Zoom), width / height, 0.1f, 100.0f);
+			return glm::perspective(glm::radians(this->Zoom), width / height, 0.1f, 1000.0f);
 		}
 
 		glm::mat4 GetOrthoMatrix(float width, float height, float scale = 1.0f) {
 			float aspect = width / height;
 
-			return glm::ortho(-aspect * scale, aspect * scale, -scale, scale, 0.1f, 100.0f);
+			return glm::ortho(-aspect * scale, aspect * scale, -scale, scale, 0.1f, 1000.0f);
 		}
 
 		void ProcessKeyboard(Camera_Movement direction, float deltaTime) {
