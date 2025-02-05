@@ -153,6 +153,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="FastNoiseLite.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
@@ -160,6 +161,8 @@
     <None Include="Shaders\colorShader.vert" />
     <None Include="Shaders\flipTriangle.vert" />
     <None Include="Shaders\greenBlink.frag" />
+    <None Include="Shaders\Mesh.frag" />
+    <None Include="Shaders\Mesh.vert" />
     <None Include="Shaders\position.frag" />
     <None Include="Shaders\position.vert" />
     <None Include="Shaders\rainbow.frag" />

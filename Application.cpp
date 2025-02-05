@@ -1,4 +1,6 @@
 #include "Application.h"
+#include <vector>
+#include "Mesh.h"
 
 namespace Margit {
 
@@ -69,14 +71,6 @@ namespace Margit {
 		glfwSetCursorPosCallback(window, mouse_callback);
 		glfwSetScrollCallback(window, scroll_callback);
 
-		float rectangle[] = {
-			// positions			// texture coords
-			 0.5f,  0.5f, 0.0f,		1.0f, 1.0f,   // top right
-			 0.5f, -0.5f, 0.0f,		1.0f, 0.0f,   // bottom right
-			-0.5f, -0.5f, 0.0f,		0.0f, 0.0f,   // bottom left
-			-0.5f,  0.5f, 0.0f,		0.0f, 1.0f    // top left 
-		};
-
 		float cube[] = {
 			// Back face
 			-0.5f, -0.5f, -0.5f,  0.0f, 0.3333f, // Bottom-left
@@ -129,10 +123,6 @@ namespace Margit {
 		// Vertex Array Object
 		GLuint VAOs[5];
 		glGenVertexArrays(5, VAOs);
-
-		// Element Buffer Object - able to reuse vertices
-		GLuint EBOs[1];
-		glGenBuffers(1, EBOs);
 
 		// Rectangle (Five)
 		glBindVertexArray(VAOs[4]);
@@ -223,11 +213,24 @@ namespace Margit {
 		dirtShader.setInt("texture1", 0);
 		dirtShader.setInt("texture2", 1);
 
+		std::vector<float> vs = {
+			-0.5f, -0.5f, 0.0f,
+			0.5f, -0.5f, 0.0f,
+			0.5f, 0.5f, 0.0f
+		};
+
+		Margit::Shader myShader("Shaders/Mesh.vert", "Shaders/Mesh.frag");
+		Margit::Mesh myMesh(vs);
+
+		myMesh.setupMesh();
+
 		while (!glfwWindowShouldClose(window)) {
 			// delta time calculation
 			float currentFrame = static_cast<float>(glfwGetTime());
 			deltaTime = currentFrame - lastFrame;
 			lastFrame = currentFrame;
+
+			dirtShader.use();
 
 			processInput(window);
 
@@ -270,6 +273,9 @@ namespace Margit {
 					}
 				}
 			}
+
+			myShader.use();
+			myMesh.render();
 
 			glfwSwapBuffers(window);
 			glfwPollEvents();
