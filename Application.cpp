@@ -216,13 +216,16 @@ namespace Margit {
 		std::vector<float> vs = {
 			-0.5f, -0.5f, 0.0f,
 			0.5f, -0.5f, 0.0f,
-			0.5f, 0.5f, 0.0f
+			0.5f, 0.5f, 0.0f,
+			-0.5f, 0.5f, 0.0f,
+		};
+		std::vector<unsigned int> is = {
+			0, 1, 2,
+			0, 2, 3
 		};
 
 		Margit::Shader myShader("Shaders/Mesh.vert", "Shaders/Mesh.frag");
-		Margit::Mesh myMesh(vs);
-
-		myMesh.setupMesh();
+		Margit::Mesh myMesh(vs, is);
 
 		while (!glfwWindowShouldClose(window)) {
 			// delta time calculation
@@ -230,12 +233,16 @@ namespace Margit {
 			deltaTime = currentFrame - lastFrame;
 			lastFrame = currentFrame;
 
-			dirtShader.use();
+			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			processInput(window);
 
-			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			myShader.use();
+			myMesh.render();
+
+			dirtShader.use();
+			glBindVertexArray(VAOs[4]);
 
 			dirtShader.setFloat("textureVisibility", textureVisibility);
 
@@ -273,9 +280,6 @@ namespace Margit {
 					}
 				}
 			}
-
-			myShader.use();
-			myMesh.render();
 
 			glfwSwapBuffers(window);
 			glfwPollEvents();
