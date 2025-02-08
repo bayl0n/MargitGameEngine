@@ -238,8 +238,7 @@ namespace Margit {
 
 			processInput(window);
 
-			myShader.use();
-			myMesh.render();
+			myMesh.render(myShader);
 
 			dirtShader.use();
 			glBindVertexArray(VAOs[4]);
