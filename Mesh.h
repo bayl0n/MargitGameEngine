@@ -84,9 +84,6 @@ namespace Margit {
 				glEnableVertexAttribArray(attribute.index);
 			}
 
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-			glEnableVertexAttribArray(0);
-
 			glBindVertexArray(0);
 		}
 
@@ -100,13 +97,20 @@ namespace Margit {
 
 		void render() {
 			glBindVertexArray(VAO);
-
+			
 			if (useEBO)
 				glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(Indices.size()), GL_UNSIGNED_INT, 0);
-			else
-				glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(Vertices.size()) / 3);
+			else {
+				GLsizei vertexCount = static_cast<GLsizei>(Vertices.size() / (layoutStride / sizeof(float)));
+				
+				glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+			}
 
 			glBindVertexArray(0);
+		}
+
+		void setLayoutStride(GLuint stride) {
+			layoutStride = stride;
 		}
 
 		void render(Shader& shader) {
@@ -127,7 +131,7 @@ namespace Margit {
 		std::vector<unsigned int> Indices;
 
 		bool useEBO = false;
-		
+		GLuint layoutStride = 0;
 		GLuint VBO, VAO, EBO;
 	};
 }

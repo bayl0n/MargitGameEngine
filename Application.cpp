@@ -214,18 +214,25 @@ namespace Margit {
 		dirtShader.setInt("texture2", 1);
 
 		std::vector<float> vs = {
-			-0.5f, -0.5f, 0.0f,
-			0.5f, -0.5f, 0.0f,
-			0.5f, 0.5f, 0.0f,
-			-0.5f, 0.5f, 0.0f,
+			-0.5f, -0.5f, 0.0f,		0.0f, 1.0f, 1.0f,
+			0.5f, -0.5f, 0.0f,		0.0f, 0.0f, 1.0f,
+			0.5f, 0.5f, 0.0f,		1.0f, 0.0f, 1.0f,
+			-0.5f, 0.5f, 0.0f,		1.0f, 1.0f, 1.0f,
 		};
 		std::vector<unsigned int> is = {
 			0, 1, 2,
 			0, 2, 3
 		};
 
+		std::vector<VertexAttribute> layout = {
+			{ 0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0 },
+			{ 1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 3 * sizeof(float) }
+		};
+
 		Margit::Shader myShader("Shaders/Mesh.vert", "Shaders/Mesh.frag");
-		Margit::Mesh myMesh(vs, is);
+		Margit::Mesh myMesh(vs, layout, is);
+
+		myMesh.setLayoutStride(6 * sizeof(float));
 
 		while (!glfwWindowShouldClose(window)) {
 			// delta time calculation
