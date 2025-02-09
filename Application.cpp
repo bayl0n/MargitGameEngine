@@ -1,5 +1,6 @@
-#include "Application.h"
 #include <vector>
+
+#include "Application.h"
 #include "Mesh.h"
 
 namespace Margit {
@@ -231,8 +232,6 @@ namespace Margit {
 
 		Margit::Shader myShader("Shaders/Mesh.vert", "Shaders/Mesh.frag");
 		Margit::Mesh myMesh(vs, layout, is);
-
-		myMesh.setLayoutStride(6 * sizeof(float));
 
 		while (!glfwWindowShouldClose(window)) {
 			// delta time calculation
