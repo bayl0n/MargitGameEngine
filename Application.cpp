@@ -72,7 +72,7 @@ namespace Margit {
 		glfwSetCursorPosCallback(window, mouse_callback);
 		glfwSetScrollCallback(window, scroll_callback);
 
-		float cube[] = {
+		std::vector<float> cubeVerts = {
 			// Back face
 			-0.5f, -0.5f, -0.5f,  0.0f, 0.3333f, // Bottom-left
 			 0.5f,  0.5f, -0.5f,  1.0f, 0.6667f, // top-right
@@ -117,25 +117,13 @@ namespace Margit {
 			 -0.5f,  0.5f,  0.5f,  0.0f, 0.6667f  // bottom-left        
 		};
 
-		// Vertex buffer object - generate buffer id, bind it to array buffer and then copy data to the bound buffer
-		GLuint VBOs[5];
-		glGenBuffers(5, VBOs);
+		std::vector<VertexAttribute> cubeLayout = {
+			{ 0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0 },
+			{ 1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 3 * sizeof(float) }
+		};
 
-		// Vertex Array Object
-		GLuint VAOs[5];
-		glGenVertexArrays(5, VAOs);
-
-		// Rectangle (Five)
-		glBindVertexArray(VAOs[4]);
-
-		glBindBuffer(GL_ARRAY_BUFFER, VBOs[4]);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(cube), cube, GL_STATIC_DRAW);
-
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
+		Margit::Mesh cubeMesh(cubeVerts, cubeLayout);
+		cubeMesh.setLayoutStride(5 * sizeof(float));
 
 		// LOAD TEXTURES
 		GLuint grassAtlasTexture;
@@ -247,7 +235,6 @@ namespace Margit {
 			myMesh.render(myShader);
 
 			dirtShader.use();
-			glBindVertexArray(VAOs[4]);
 
 			dirtShader.setFloat("textureVisibility", textureVisibility);
 
@@ -281,7 +268,7 @@ namespace Margit {
 
 						dirtShader.setMat4("model", model);
 
-						glDrawArrays(GL_TRIANGLES, 0, 36);
+						cubeMesh.render(dirtShader);
 					}
 				}
 			}
