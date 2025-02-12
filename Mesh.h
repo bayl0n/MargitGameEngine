@@ -2,16 +2,17 @@
 #include <glad/glad.h>
 #include <vector>
 
-struct VertexAttribute {
-	GLuint index;
-	GLint size;
-	GLenum type;
-	GLboolean normalized;
-	GLsizei stride;
-	size_t offset;
-};
 
 namespace Margit {
+	struct VertexAttribute {
+		GLuint index;
+		GLint size;
+		GLenum type;
+		GLboolean normalized;
+		GLsizei stride;
+		size_t offset;
+	};
+	
 	class Mesh
 	{
 	public:

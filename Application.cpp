@@ -117,7 +117,7 @@ namespace Margit {
 			 -0.5f,  0.5f,  0.5f,  0.0f, 0.6667f  // bottom-left        
 		};
 
-		std::vector<VertexAttribute> cubeLayout = {
+		std::vector<Margit::VertexAttribute> cubeLayout = {
 			{ 0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 0 },
 			{ 1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), 3 * sizeof(float) }
 		};
@@ -213,7 +213,7 @@ namespace Margit {
 			0, 2, 3
 		};
 
-		std::vector<VertexAttribute> layout = {
+		std::vector<Margit::VertexAttribute> layout = {
 			{ 0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0 },
 			{ 1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 3 * sizeof(float) }
 		};
