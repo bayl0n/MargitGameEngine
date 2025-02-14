@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "Mesh.h"
+#include "Chunk.h"
 
 namespace Margit {
 
@@ -220,6 +221,13 @@ namespace Margit {
 
 		Margit::Shader myShader("Shaders/Mesh.vert", "Shaders/Mesh.frag");
 		Margit::Mesh myMesh(vs, layout, is);
+
+		Margit::ChunkLayout myChunkLayout = {
+			0, 0, 0,
+			16, 16, 16
+		};
+
+		Margit::Chunk myChunk(myChunkLayout);
 
 		while (!glfwWindowShouldClose(window)) {
 			// delta time calculation
