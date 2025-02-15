@@ -254,11 +254,11 @@ namespace Margit {
 			glm::mat4 view = camera.GetViewMatrix();
 			dirtShader.setMat4("view", view);
 
-			for (int chunkWidth = 0; chunkWidth < 64; chunkWidth++) {
-				for (int chunkDepth = 0; chunkDepth < 64; chunkDepth++) {
+			for (int chunkWidth = 0; chunkWidth < 16; chunkWidth++) {
+				for (int chunkDepth = 0; chunkDepth < 16; chunkDepth++) {
 
 					float noiseValue = noise.GetNoise((float)chunkWidth, (float)chunkDepth);
-					float chunkPillarHeight = (noiseValue - -1.0f) / (1.0f - -1.0f) * (15 - 0) + 0; // TODO: Turn this into a remap function
+					float chunkPillarHeight = Margit::Chunk::remap(noiseValue, -1.0f, 1.0f, 0, 15);
 
 					for (int chunkHeight = 0; chunkHeight < chunkPillarHeight; chunkHeight++) {
 						glm::mat4 model = glm::mat4(1.0f);
