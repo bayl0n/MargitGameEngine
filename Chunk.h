@@ -1,5 +1,6 @@
 #pragma once
 #include "FastNoiseLite.h"
+#include <vector>
 
 namespace Margit {
 	struct ChunkLayout {
@@ -7,15 +8,22 @@ namespace Margit {
 		int y;
 		int z;
 		int width;
-		int height;
 		int depth;
+		int height;
+		std::vector<std::vector<std::vector<float>>> chunkData;
 	};
 
 	class Chunk
 	{
 	public:
 		Chunk(ChunkLayout layout) : Layout(layout) {
-
+			for (int chunkWidth = 0; chunkWidth < Layout.width; chunkWidth++) {
+				for (int chunkDepth = 0; chunkDepth < Layout.depth; chunkDepth++) {
+					for (int chunkHeight = 0; chunkHeight < Layout.height; chunkHeight++) {
+						// init chunk data
+					}
+				}
+			}
 		}
 
 		/*
