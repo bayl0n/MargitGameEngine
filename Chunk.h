@@ -10,7 +10,6 @@ namespace Margit {
 		int width;
 		int depth;
 		int height;
-		std::vector<std::vector<std::vector<float>>> chunkData;
 	};
 
 	class Chunk
@@ -20,7 +19,7 @@ namespace Margit {
 			for (int chunkWidth = 0; chunkWidth < Layout.width; chunkWidth++) {
 				for (int chunkDepth = 0; chunkDepth < Layout.depth; chunkDepth++) {
 					for (int chunkHeight = 0; chunkHeight < Layout.height; chunkHeight++) {
-						// init chunk data
+						ChunkData[chunkWidth][chunkDepth][chunkHeight] =
 					}
 				}
 			}
@@ -57,6 +56,7 @@ namespace Margit {
 
 	protected:
 		ChunkLayout Layout;
+		std::vector<std::vector<std::vector<float>>> ChunkData;
 	};
 }
 
