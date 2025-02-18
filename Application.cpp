@@ -240,7 +240,7 @@ namespace Margit {
 
 			processInput(window);
 
-			myMesh.render(myShader);
+			//myMesh.render(myShader);
 
 			dirtShader.use();
 
@@ -248,7 +248,7 @@ namespace Margit {
 
 			// camera logic
 			glm::mat4 projection;
-			projection = camera.GetPerspectiveMatrix(static_cast<float>(screen_width), static_cast<float>(screen_height));
+			projection = camera.GetOrthoMatrix(static_cast<float>(screen_width), static_cast<float>(screen_height));
 			dirtShader.setMat4("projection", projection);
 
 			glm::mat4 view = camera.GetViewMatrix();

@@ -19,7 +19,7 @@ namespace Margit {
 			for (int chunkWidth = 0; chunkWidth < Layout.width; chunkWidth++) {
 				for (int chunkDepth = 0; chunkDepth < Layout.depth; chunkDepth++) {
 					for (int chunkHeight = 0; chunkHeight < Layout.height; chunkHeight++) {
-						ChunkData[chunkWidth][chunkDepth][chunkHeight] =
+						//ChunkData[chunkWidth][chunkDepth][chunkHeight];
 					}
 				}
 			}
