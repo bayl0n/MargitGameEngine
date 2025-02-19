@@ -15,6 +15,12 @@ namespace Margit {
 		TILT_RIGHT
 	};
 
+	enum Camera_Mode {
+		CMODE_NONE,
+		CMODE_PERSPECTIVE,
+		CMODE_ORTHOGONAL
+	};
+
 	const float YAW = -90.0f;
 	const float PITCH = 0.0f;
 	const float ROLL = 0.0f;
@@ -39,6 +45,8 @@ namespace Margit {
 		float MouseSensitivity;
 		float Zoom;
 
+		Camera_Mode CameraMode;
+
 		// constructor with vectors
 		Camera(
 			glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
@@ -54,6 +62,7 @@ namespace Margit {
 			Yaw = yaw;
 			Pitch = pitch;
 			Roll = roll;
+			CameraMode = CMODE_NONE;
 			updateCameraVectors();
 		}
 
@@ -78,6 +87,7 @@ namespace Margit {
 			Yaw = yaw;
 			Pitch = pitch;
 			Roll = roll;
+			CameraMode = CMODE_NONE;
 			updateCameraVectors();
 		}
 
@@ -86,10 +96,13 @@ namespace Margit {
 		}
 
 		glm::mat4 GetPerspectiveMatrix(float width, float height) {
+			CameraMode = CMODE_PERSPECTIVE;
 			return glm::perspective(glm::radians(this->Zoom), width / height, 0.1f, 1000.0f);
 		}
 
 		glm::mat4 GetOrthoMatrix(float width, float height, float scale = 1.0f) {
+			CameraMode = CMODE_ORTHOGONAL;
+			
 			float aspect = width / height;
 
 			return glm::ortho(-aspect * scale, aspect * scale, -scale, scale, 0.1f, 1000.0f);

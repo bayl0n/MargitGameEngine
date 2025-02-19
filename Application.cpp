@@ -248,7 +248,7 @@ namespace Margit {
 
 			// camera logic
 			glm::mat4 projection;
-			projection = camera.GetOrthoMatrix(static_cast<float>(screen_width), static_cast<float>(screen_height));
+			projection = camera.GetOrthoMatrix(static_cast<float>(screen_width), static_cast<float>(screen_height), camera.Zoom);
 			dirtShader.setMat4("projection", projection);
 
 			glm::mat4 view = camera.GetViewMatrix();
