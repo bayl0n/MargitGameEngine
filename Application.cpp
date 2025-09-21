@@ -27,9 +27,9 @@ namespace Margit {
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-#ifdef __APPLE__
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
+		#ifdef __APPLE__
+				glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		#endif
 
 		GLFWmonitor* myMonitor = glfwGetPrimaryMonitor();
 		const GLFWvidmode* mode = glfwGetVideoMode(myMonitor);
@@ -248,7 +248,7 @@ namespace Margit {
 
 			// camera logic
 			glm::mat4 projection;
-			projection = camera.GetOrthoMatrix(static_cast<float>(screen_width), static_cast<float>(screen_height), camera.Zoom);
+			projection = camera.GetPerspectiveMatrix(static_cast<float>(screen_width), static_cast<float>(screen_height));
 			dirtShader.setMat4("projection", projection);
 
 			glm::mat4 view = camera.GetViewMatrix();
